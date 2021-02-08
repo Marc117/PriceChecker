@@ -1,4 +1,3 @@
-
 import sys
 
 sys.path.append('')
@@ -38,17 +37,26 @@ def getPriceFromFile():
 
 if __name__ == '__main__':
     priceWebsite = getPriceFromWebsite(table)
-    priceFile = -1;
+    priceFile = -1
     if path.exists("logs.txt"):
-        priceFile = getPriceFromFile()
-        if priceWebsite != float(priceFile[0]):
-            print("Price changed")
+        log_price_date = getPriceFromFile()
+        priceFile = str(log_price_date[0])
+        dateFile = datetime.datetime.strptime(log_price_date[1], '%Y-%m-%d %H:%M:%S.%f')
+
+        if priceWebsite != float(priceFile):
+            print("Preis hat sich geändert:")
         else:
-            print("Price did not change")
+            print("Preis hat sich nicht geändert:")
+
+        print('Preis aus Log-Datei: ', priceFile)
+        print('Zeitangabe aus Log-Datei: ', dateFile)
+        print('Preis von der Website', priceWebsite)
 
         saveToFile(priceWebsite)
 
-        input("Press enter to exit")
+        input("Enter drücken um Programm zu beenden")
     else:
-        print("First run, no price saved yet")
+        print("Keine Log-Datei vorhanden. Neue Log-Datei mit aktuellem Preis erstellt.")
+        print("Aktueller Preis: ", priceWebsite);
         saveToFile(priceWebsite)
+        input("Enter drücken um Programm zu beenden")
